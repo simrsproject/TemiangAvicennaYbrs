@@ -179,89 +179,109 @@ namespace Temiang.Avicenna.Module.RADT.Bpjs
             var svc = new Common.BPJS.VClaim.v11.Service();
             if (rblJenisKontrol.SelectedValue == "1")
             {
-                var response = svc.Insert(new Common.BPJS.VClaim.v11.RencanaKontrol.InsertSpri.Request.Root()
+                try
                 {
-                    Request = new Common.BPJS.VClaim.v11.RencanaKontrol.InsertSpri.Request.TRequest()
+                    var response = svc.Insert(new Common.BPJS.VClaim.v11.RencanaKontrol.InsertSpri.Request.Root()
                     {
-                        NoKartu = txtNoPeserta.Text,
-                        KodeDokter = cboDpjpKontrol.SelectedValue,
-                        PoliKontrol = cboPoliDirujuk.SelectedValue,
-                        TglRencanaKontrol = txtTglRujukan.IsEmpty ? txtTglRujukan.FocusedDate.Date.ToString("yyyy-MM-dd") : txtTglRujukan.SelectedDate.Value.ToString("yyyy-MM-dd"),
-                        User = AppSession.UserLogin.UserID
+                        Request = new Common.BPJS.VClaim.v11.RencanaKontrol.InsertSpri.Request.TRequest()
+                        {
+                            NoKartu = txtNoPeserta.Text,
+                            KodeDokter = cboDpjpKontrol.SelectedValue,
+                            PoliKontrol = cboPoliDirujuk.SelectedValue,
+                            TglRencanaKontrol = txtTglRujukan.IsEmpty ? txtTglRujukan.FocusedDate.Date.ToString("yyyy-MM-dd") : txtTglRujukan.SelectedDate.Value.ToString("yyyy-MM-dd"),
+                            User = AppSession.UserLogin.UserID
+                        }
+                    });
+                    if (response.MetaData.IsValid) txtNoRujukan.Text = response.Response.NoSPRI;
+                    else
+                    {
+                        ShowInformationHeader(string.Format("Code {0}), Message : {1}", response.MetaData.Code, response.MetaData.Message));
+                        args.MessageText = string.Format("Code {0}), Message : {1}", response.MetaData.Code, response.MetaData.Message);
+                        args.IsCancel = true;
+                        return;
                     }
-                });
-                if (response.MetaData.IsValid) txtNoRujukan.Text = response.Response.NoSPRI;
-                else
+                }
+                catch (Exception ex)
                 {
-                    ShowInformationHeader(string.Format("Code {0}), Message : {1}", response.MetaData.Code, response.MetaData.Message));
-                    args.MessageText = string.Format("Code {0}), Message : {1}", response.MetaData.Code, response.MetaData.Message);
+                    ShowInformationHeader(string.Format("Code {0}), Message : {1}", "404", "Server VKlaim BPJS sedang gangguan"));
+                    args.MessageText = string.Format("Code {0}), Message : {1}", "404", "Server VKlaim BPJS sedang gangguan");
                     args.IsCancel = true;
                     return;
                 }
             }
             else
             {
-                var response = svc.Insert(new Common.BPJS.VClaim.v11.RencanaKontrol.Insert.Request.Root()
+                try
                 {
-                    Request = new Common.BPJS.VClaim.v11.RencanaKontrol.Insert.Request.TRequest()
+                    var response = svc.Insert(new Common.BPJS.VClaim.v11.RencanaKontrol.Insert.Request.Root()
                     {
-                        NoSEP = txtNoSep.Text,
-                        KodeDokter = cboDpjpKontrol.SelectedValue,
-                        PoliKontrol = cboPoliDirujuk.SelectedValue,
-                        TglRencanaKontrol = txtTglRujukan.IsEmpty ? txtTglRujukan.FocusedDate.Date.ToString("yyyy-MM-dd") : txtTglRujukan.SelectedDate.Value.ToString("yyyy-MM-dd"),
-                        User = AppSession.UserLogin.UserID
-                    }
-                });
-                if (response.MetaData.IsValid)
-                {
-                    txtNoRujukan.Text = response.Response.NoSuratKontrol;
-
-                    if (string.IsNullOrWhiteSpace(cboPoliDirujuk.SelectedValue)) return;
-                    //var load = false;
-
-                    //var poli = new ServiceUnitBridging();
-                    //poli.Query.Where(poli.Query.SRBridgingType == AppEnum.BridgingType.ANTROL.ToString());
-                    //poli.Query.Where($"< SUBSTRING(BridgingID, CHARINDEX(';', BridgingID) + 1, 3) = '{cboPoliDirujuk.SelectedValue}'>");
-                    //load = poli.Query.Load();
-                    //if (!load)
-                    //{
-                    //    poli = new ServiceUnitBridging();
-                    //    poli.Query.Where(poli.Query.SRBridgingType == AppEnum.BridgingType.ANTROL.ToString());
-                    //    poli.Query.Where($"< SUBSTRING(BridgingID, 0, CHARINDEX(';', BridgingID)) = '{cboPoliDirujuk.SelectedValue}'>");
-                    //    load = poli.Query.Load();
-                    //}
-
-                    //if (load)
-                    //{
-                    var pb = new ParamedicBridging();
-                    pb.Query.Where(pb.Query.BridgingID == cboDpjpKontrol.SelectedValue, pb.Query.SRBridgingType == AppEnum.BridgingType.BPJS.ToString());
-                    if (!pb.Query.Load()) return;
-
-                    var psds = new ParamedicScheduleDateCollection();
-                    psds.Query.Where(psds.Query.ScheduleDate.Date() == txtTglRujukan.SelectedDate?.Date,
-                        psds.Query.ParamedicID == pb.ParamedicID);
-                    if (!psds.Query.Load()) return;
-
-                    foreach (var psd in psds)
+                        Request = new Common.BPJS.VClaim.v11.RencanaKontrol.Insert.Request.TRequest()
+                        {
+                            NoSEP = txtNoSep.Text,
+                            KodeDokter = cboDpjpKontrol.SelectedValue,
+                            PoliKontrol = cboPoliDirujuk.SelectedValue,
+                            TglRencanaKontrol = txtTglRujukan.IsEmpty ? txtTglRujukan.FocusedDate.Date.ToString("yyyy-MM-dd") : txtTglRujukan.SelectedDate.Value.ToString("yyyy-MM-dd"),
+                            User = AppSession.UserLogin.UserID
+                        }
+                    });
+                    if (response.MetaData.IsValid)
                     {
-                        var appt = new AppointmentQuery("a");
-                        var pat = new PatientQuery("b");
+                        txtNoRujukan.Text = response.Response.NoSuratKontrol;
 
-                        appt.es.Top = 1;
-                        appt.InnerJoin(pat).On(appt.PatientID == pat.PatientID);
-                        appt.Where(pat.GuarantorID == txtNoPeserta.Text, appt.AppointmentDate.Date() == txtTglRujukan.SelectedDate?.Date, appt.ParamedicID == pb.ParamedicID, appt.ServiceUnitID == psd.ServiceUnitID);
+                        if (string.IsNullOrWhiteSpace(cboPoliDirujuk.SelectedValue)) return;
+                        //var load = false;
 
-                        var app = new BusinessObject.Appointment();
-                        if (!app.Load(appt)) continue;
-                        app.ReferenceNumber = txtNoRujukan.Text;
-                        app.Save();
+                        //var poli = new ServiceUnitBridging();
+                        //poli.Query.Where(poli.Query.SRBridgingType == AppEnum.BridgingType.ANTROL.ToString());
+                        //poli.Query.Where($"< SUBSTRING(BridgingID, CHARINDEX(';', BridgingID) + 1, 3) = '{cboPoliDirujuk.SelectedValue}'>");
+                        //load = poli.Query.Load();
+                        //if (!load)
+                        //{
+                        //    poli = new ServiceUnitBridging();
+                        //    poli.Query.Where(poli.Query.SRBridgingType == AppEnum.BridgingType.ANTROL.ToString());
+                        //    poli.Query.Where($"< SUBSTRING(BridgingID, 0, CHARINDEX(';', BridgingID)) = '{cboPoliDirujuk.SelectedValue}'>");
+                        //    load = poli.Query.Load();
+                        //}
+
+                        //if (load)
+                        //{
+                        var pb = new ParamedicBridging();
+                        pb.Query.Where(pb.Query.BridgingID == cboDpjpKontrol.SelectedValue, pb.Query.SRBridgingType == AppEnum.BridgingType.BPJS.ToString());
+                        if (!pb.Query.Load()) return;
+
+                        var psds = new ParamedicScheduleDateCollection();
+                        psds.Query.Where(psds.Query.ScheduleDate.Date() == txtTglRujukan.SelectedDate?.Date,
+                            psds.Query.ParamedicID == pb.ParamedicID);
+                        if (!psds.Query.Load()) return;
+
+                        foreach (var psd in psds)
+                        {
+                            var appt = new AppointmentQuery("a");
+                            var pat = new PatientQuery("b");
+
+                            appt.es.Top = 1;
+                            appt.InnerJoin(pat).On(appt.PatientID == pat.PatientID);
+                            appt.Where(pat.GuarantorID == txtNoPeserta.Text, appt.AppointmentDate.Date() == txtTglRujukan.SelectedDate?.Date, appt.ParamedicID == pb.ParamedicID, appt.ServiceUnitID == psd.ServiceUnitID);
+
+                            var app = new BusinessObject.Appointment();
+                            if (!app.Load(appt)) continue;
+                            app.ReferenceNumber = txtNoRujukan.Text;
+                            app.Save();
+                        }
+                        //}
                     }
-                    //}
+                    else
+                    {
+                        ShowInformationHeader(string.Format("Code {0}), Message : {1}", response.MetaData.Code, response.MetaData.Message));
+                        args.MessageText = string.Format("Code {0}), Message : {1}", response.MetaData.Code, response.MetaData.Message);
+                        args.IsCancel = true;
+                        return;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    ShowInformationHeader(string.Format("Code {0}), Message : {1}", response.MetaData.Code, response.MetaData.Message));
-                    args.MessageText = string.Format("Code {0}), Message : {1}", response.MetaData.Code, response.MetaData.Message);
+                    ShowInformationHeader(string.Format("Code {0}), Message : {1}", "404", "Server VKlaim BPJS sedang gangguan"));
+                    args.MessageText = string.Format("Code {0}), Message : {1}", "404", "Server VKlaim BPJS sedang gangguan");
                     args.IsCancel = true;
                     return;
                 }
@@ -273,81 +293,115 @@ namespace Temiang.Avicenna.Module.RADT.Bpjs
             var svc = new Common.BPJS.VClaim.v11.Service();
             if (rblJenisKontrol.SelectedValue == "1")
             {
-                var response = svc.Update(new Common.BPJS.VClaim.v11.RencanaKontrol.UpdateSpri.Request.Root()
+                try
                 {
-                    Request = new Common.BPJS.VClaim.v11.RencanaKontrol.UpdateSpri.Request.TRequest()
+                    var response = svc.Update(new Common.BPJS.VClaim.v11.RencanaKontrol.UpdateSpri.Request.Root()
                     {
-                        NoSPRI = txtNoRujukan.Text,
-                        KodeDokter = cboDpjpKontrol.SelectedValue,
-                        PoliKontrol = cboPoliDirujuk.SelectedValue,
-                        TglRencanaKontrol = txtTglRujukan.IsEmpty ? txtTglRujukan.FocusedDate.Date.ToString("yyyy-MM-dd") : txtTglRujukan.SelectedDate.Value.ToString("yyyy-MM-dd"),
-                        User = AppSession.UserLogin.UserID
+                        Request = new Common.BPJS.VClaim.v11.RencanaKontrol.UpdateSpri.Request.TRequest()
+                        {
+                            NoSPRI = txtNoRujukan.Text,
+                            KodeDokter = cboDpjpKontrol.SelectedValue,
+                            PoliKontrol = cboPoliDirujuk.SelectedValue,
+                            TglRencanaKontrol = txtTglRujukan.IsEmpty ? txtTglRujukan.FocusedDate.Date.ToString("yyyy-MM-dd") : txtTglRujukan.SelectedDate.Value.ToString("yyyy-MM-dd"),
+                            User = AppSession.UserLogin.UserID
+                        }
+                    });
+                    if (response.MetaData.IsValid) txtNoRujukan.Text = response.Response.NoSPRI;
+                    else
+                    {
+                        ShowInformationHeader(string.Format("Code {0}), Message : {1}", response.MetaData.Code, response.MetaData.Message));
+                        args.MessageText = string.Format("Code {0}), Message : {1}", "404", "Server VKlaim BPJS sedang gangguan");
+                        args.IsCancel = true;
+                        return;
                     }
-                });
-                if (response.MetaData.IsValid) txtNoRujukan.Text = response.Response.NoSPRI;
-                else ShowInformationHeader(string.Format("Code {0}), Message : {1}", response.MetaData.Code, response.MetaData.Message));
+                }
+                catch (Exception ex)
+                {
+                    ShowInformationHeader(string.Format("Code {0}), Message : {1}", "404", "Server VKlaim BPJS sedang gangguan"));
+                    args.MessageText = string.Format("Code {0}), Message : {1}", "404", "Server VKlaim BPJS sedang gangguan");
+                    args.IsCancel = true;
+                    return;
+                }
+                
             }
             else
             {
-                var response = svc.Update(new Common.BPJS.VClaim.v11.RencanaKontrol.Update.Request.Root()
+
+                try
                 {
-                    Request = new Common.BPJS.VClaim.v11.RencanaKontrol.Update.Request.TRequest()
+                    var response = svc.Update(new Common.BPJS.VClaim.v11.RencanaKontrol.Update.Request.Root()
                     {
-                        NoSuratKontrol = txtNoRujukan.Text,
-                        NoSEP = txtNoSep.Text,
-                        KodeDokter = cboDpjpKontrol.SelectedValue,
-                        PoliKontrol = cboPoliDirujuk.SelectedValue,
-                        TglRencanaKontrol = txtTglRujukan.IsEmpty ? txtTglRujukan.FocusedDate.Date.ToString("yyyy-MM-dd") : txtTglRujukan.SelectedDate.Value.ToString("yyyy-MM-dd"),
-                        User = AppSession.UserLogin.UserID
-                    }
-                });
-                if (response.MetaData.IsValid)
-                {
-                    txtNoRujukan.Text = response.Response.NoSuratKontrol;
-
-                    if (string.IsNullOrWhiteSpace(cboPoliDirujuk.SelectedValue)) return;
-                    //var load = false;
-
-                    //var poli = new ServiceUnitBridging();
-                    //poli.Query.Where(poli.Query.SRBridgingType == AppEnum.BridgingType.ANTROL.ToString());
-                    //poli.Query.Where($"< SUBSTRING(BridgingID, CHARINDEX(';', BridgingID) + 1, 3) = '{cboPoliDirujuk.SelectedValue}'>");
-                    //load = poli.Query.Load();
-                    //if (!load)
-                    //{
-                    //    poli = new ServiceUnitBridging();
-                    //    poli.Query.Where(poli.Query.SRBridgingType == AppEnum.BridgingType.ANTROL.ToString());
-                    //    poli.Query.Where($"< SUBSTRING(BridgingID, 0, CHARINDEX(';', BridgingID)) = '{cboPoliDirujuk.SelectedValue}'>");
-                    //    load = poli.Query.Load();
-                    //}
-
-                    //if (load)
-                    //{
-                    var pb = new ParamedicBridging();
-                    pb.Query.Where(pb.Query.BridgingID == cboDpjpKontrol.SelectedValue, pb.Query.SRBridgingType == AppEnum.BridgingType.BPJS.ToString());
-                    if (!pb.Query.Load()) return;
-
-                    var psds = new ParamedicScheduleDateCollection();
-                    psds.Query.Where(psds.Query.ScheduleDate.Date() == txtTglRujukan.SelectedDate?.Date,
-                        psds.Query.ParamedicID == pb.ParamedicID);
-                    if (!psds.Query.Load()) return;
-
-                    foreach (var psd in psds)
+                        Request = new Common.BPJS.VClaim.v11.RencanaKontrol.Update.Request.TRequest()
+                        {
+                            NoSuratKontrol = txtNoRujukan.Text,
+                            NoSEP = txtNoSep.Text,
+                            KodeDokter = cboDpjpKontrol.SelectedValue,
+                            PoliKontrol = cboPoliDirujuk.SelectedValue,
+                            TglRencanaKontrol = txtTglRujukan.IsEmpty ? txtTglRujukan.FocusedDate.Date.ToString("yyyy-MM-dd") : txtTglRujukan.SelectedDate.Value.ToString("yyyy-MM-dd"),
+                            User = AppSession.UserLogin.UserID
+                        }
+                    });
+                    if (response.MetaData.IsValid)
                     {
-                        var appt = new AppointmentQuery("a");
-                        var pat = new PatientQuery("b");
+                        txtNoRujukan.Text = response.Response.NoSuratKontrol;
 
-                        appt.es.Top = 1;
-                        appt.InnerJoin(pat).On(appt.PatientID == pat.PatientID);
-                        appt.Where(pat.GuarantorID == txtNoPeserta.Text, appt.AppointmentDate.Date() == txtTglRujukan.SelectedDate?.Date, appt.ParamedicID == pb.ParamedicID, appt.ServiceUnitID == psd.ServiceUnitID);
+                        if (string.IsNullOrWhiteSpace(cboPoliDirujuk.SelectedValue)) return;
+                        //var load = false;
 
-                        var app = new BusinessObject.Appointment();
-                        if (!app.Load(appt)) continue;
-                        app.ReferenceNumber = txtNoRujukan.Text;
-                        app.Save();
+                        //var poli = new ServiceUnitBridging();
+                        //poli.Query.Where(poli.Query.SRBridgingType == AppEnum.BridgingType.ANTROL.ToString());
+                        //poli.Query.Where($"< SUBSTRING(BridgingID, CHARINDEX(';', BridgingID) + 1, 3) = '{cboPoliDirujuk.SelectedValue}'>");
+                        //load = poli.Query.Load();
+                        //if (!load)
+                        //{
+                        //    poli = new ServiceUnitBridging();
+                        //    poli.Query.Where(poli.Query.SRBridgingType == AppEnum.BridgingType.ANTROL.ToString());
+                        //    poli.Query.Where($"< SUBSTRING(BridgingID, 0, CHARINDEX(';', BridgingID)) = '{cboPoliDirujuk.SelectedValue}'>");
+                        //    load = poli.Query.Load();
+                        //}
+
+                        //if (load)
+                        //{
+                        var pb = new ParamedicBridging();
+                        pb.Query.Where(pb.Query.BridgingID == cboDpjpKontrol.SelectedValue, pb.Query.SRBridgingType == AppEnum.BridgingType.BPJS.ToString());
+                        if (!pb.Query.Load()) return;
+
+                        var psds = new ParamedicScheduleDateCollection();
+                        psds.Query.Where(psds.Query.ScheduleDate.Date() == txtTglRujukan.SelectedDate?.Date,
+                            psds.Query.ParamedicID == pb.ParamedicID);
+                        if (!psds.Query.Load()) return;
+
+                        foreach (var psd in psds)
+                        {
+                            var appt = new AppointmentQuery("a");
+                            var pat = new PatientQuery("b");
+
+                            appt.es.Top = 1;
+                            appt.InnerJoin(pat).On(appt.PatientID == pat.PatientID);
+                            appt.Where(pat.GuarantorID == txtNoPeserta.Text, appt.AppointmentDate.Date() == txtTglRujukan.SelectedDate?.Date, appt.ParamedicID == pb.ParamedicID, appt.ServiceUnitID == psd.ServiceUnitID);
+
+                            var app = new BusinessObject.Appointment();
+                            if (!app.Load(appt)) continue;
+                            app.ReferenceNumber = txtNoRujukan.Text;
+                            app.Save();
+                        }
+                        //}
                     }
-                    //}
+                    else
+                    {
+                        ShowInformationHeader(string.Format("Code {0}), Message : {1}", response.MetaData.Code, response.MetaData.Message));
+                        args.MessageText = string.Format("Code {0}), Message : {1}", "404", "Server VKlaim BPJS sedang gangguan");
+                        args.IsCancel = true;
+                        return;
+                    }
                 }
-                else ShowInformationHeader(string.Format("Code {0}), Message : {1}", response.MetaData.Code, response.MetaData.Message));
+                catch(Exception ex)
+                {
+                    ShowInformationHeader(string.Format("Code {0}), Message : {1}", "404", "Server VKlaim BPJS sedang gangguan"));
+                    args.MessageText = string.Format("Code {0}), Message : {1}", "404", "Server VKlaim BPJS sedang gangguan");
+                    args.IsCancel = true;
+                    return;
+                }
             }
         }
 
