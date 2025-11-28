@@ -1,0 +1,22 @@
+# Build results
+x64/
+x86/
+.vs/
+.vscode/
+/.vs/Temiang.Avicenna/config/applicationhost.config
+/.vs/Temiang.Avicenna/v17/fileList.bin
+/.vs/Temiang.Avicenna/v17/.suo
+/Temiang.Avicenna/obj/Debug/*.cache
+/Temiang.Avicenna/obj/Release/*.cache
+/Temiang.Avicenna.Bridging.PCare/obj/Debug/*.cache
+/Temiang.Avicenna.Bridging.PCare/obj/Release/*.cache
+/Temiang.Avicenna.Bridging.SatuSehat/obj/Debug/*.cache
+/Temiang.Avicenna.Bridging.SatuSehat/obj/Release/*.cache
+/Temiang.Avicenna.BusinessObject/obj/Debug/*.cache
+/Temiang.Avicenna.BusinessObject/obj/Release/*.cache
+/Temiang.Avicenna.Common/obj/Debug/*.cache
+/Temiang.Avicenna.Common/obj/Release/*.cache
+/Temiang.Avicenna.ReportLibrary/obj/Debug/*.cache
+/Temiang.Avicenna.ReportLibrary/obj/Release/*.cache
+/Temiang.Avicenna.Tests/obj/Debug/*.cache
+/Temiang.Avicenna.Tests/obj/Release/*.cache
