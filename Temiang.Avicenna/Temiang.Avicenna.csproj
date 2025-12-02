@@ -5274,6 +5274,14 @@
     <Content Include="Views\Home\Announcement.cshtml" />
     <Content Include="Views\Home\Chart16_05.cshtml" />
     <Content Include="Views\Queueing\RunningTextEditor.cshtml" />
+    <Content Include="Views\QueueingV2\HomePage.cshtml" />
+    <Content Include="Views\QueueingV2\Rscideres\DisplayPoli.cshtml" />
+    <Content Include="Views\QueueingV2\Rscideres\DisplayReg.cshtml" />
+    <Content Include="Views\QueueingV2\DisplayPoli.cshtml" />
+    <Content Include="Views\QueueingV2\DisplayPoliByPhysician.cshtml" />
+    <Content Include="Views\QueueingV2\DisplayReg.cshtml" />
+    <Content Include="Views\QueueingV2\GetQueue.cshtml" />
+    <Content Include="Views\QueueingV2\RunningTextEditor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccessFailed.aspx.cs">
@@ -5323,6 +5331,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\QueueingController.cs" />
     <Compile Include="Controllers\PosController.cs" />
+    <Compile Include="Controllers\QueueingV2Controller.cs" />
     <Compile Include="CustomControl\AddressCtl.ascx.cs">
       <DependentUpon>AddressCtl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -25299,6 +25308,7 @@
     <Folder Include="Module\RADT\Cpoe\Common\Refer\" />
     <Folder Include="Module\RADT\EmrIp\EmrIpCommon\Assessment\" />
     <Folder Include="Module\RADT\EmrIp\EmrIpCommon\ReferInPatient\" />
+    <Folder Include="obj\Release\Package\PackageTmp\Views\Home\" />
     <Folder Include="Views\Antrol\" />
     <Folder Include="Views\EisDinkes\" />
     <Folder Include="Views\JakiHelfa\" />
