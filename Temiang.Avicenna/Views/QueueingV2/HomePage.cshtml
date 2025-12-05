@@ -36,7 +36,7 @@
     }
 </style>
 @{
-    var oSet = (Temiang.Avicenna.Controllers.UserQueueingSettings)ViewBag.oSet;
+    var oSet = (Temiang.Avicenna.Controllers.QueueingV2Controller.UserQueueingSettings)ViewBag.oSet;
 }
 <div class="row">
     <div class="col-2">
@@ -183,7 +183,7 @@
                                                 <div class="col-12 m-0">
                                                     <div class="small-box bg-gradient-primary">
                                                         <div class="inner" style="text-align:center">
-                                                            <h3><span id="spanCurrentNumber">@(((Temiang.Avicenna.Controllers.CustomQueueing)ViewBag.currentQue).FormattedNo)</span></h3>
+                                                            <h3><span id="spanCurrentNumber">@(((Temiang.Avicenna.Controllers.QueueingV2Controller.CustomQueueing)ViewBag.currentQue).FormattedNo)</span></h3>
                                                         </div>
                                                         <div class="icon">
                                                             <i class="ion ion-bag"></i>
@@ -278,7 +278,7 @@
                 }
             }],
             "ajax": {
-                "url": "@(ViewBag.UrlRoot)/Queueing/GetData",
+                "url": "@(ViewBag.UrlRoot)/QueueingV2/GetData",
                 "type": "POST",
                 "datatype": "json",
                 "data": function (d) {
@@ -409,7 +409,7 @@
 
         $.ajax({
             type: 'POST',
-            url: "@(ViewBag.UrlRoot)/Queueing/SaveSettings",
+            url: "@(ViewBag.UrlRoot)/QueueingV2/SaveSettings",
             data: {
                 qLocation: GetSelectedQLoc(),
                 qGroup: GetSelectedQGroup(),
@@ -448,7 +448,7 @@
         CoreLoadingOn(oSender);
         $.ajax({
             type: 'POST',
-            url: "@(ViewBag.UrlRoot)/Queueing/NextByRow",
+            url: "@(ViewBag.UrlRoot)/QueueingV2/NextByRow",
             data: {
                 qLocation: qLoc, qGroup: qGroup, qType: qType, suId: suId, parId: parId,
                 counterCode: $('#cboCounterCode').find(":selected").val(),
@@ -479,7 +479,7 @@
         CoreLoadingOn(oSender);
         $.ajax({
             type: 'POST',
-            url: "@(ViewBag.UrlRoot)/Queueing/Next",
+            url: "@(ViewBag.UrlRoot)/QueueingV2/Next",
             data: {
                 qLocation: GetSelectedQLoc(),
                 qGroup: GetSelectedQGroup(),
@@ -519,7 +519,7 @@
         CoreLoadingOn(oSender);
         $.ajax({
             type: 'POST',
-            url: "@(ViewBag.UrlRoot)/Queueing/Recall",
+            url: "@(ViewBag.UrlRoot)/QueueingV2/Recall",
             data: {
                 currentNo: GetCurrentQue(),
                 userId: userId
@@ -546,7 +546,7 @@
         CoreLoadingOn(oSender);
         $.ajax({
             type: 'POST',
-            url: "@(ViewBag.UrlRoot)/Queueing/Stop",
+            url: "@(ViewBag.UrlRoot)/QueueingV2/Stop",
             data: {
                 userId: userId
             },
@@ -573,7 +573,7 @@
         CoreLoadingOn(oSender);
         $.ajax({
             type: 'POST',
-            url: "@(ViewBag.UrlRoot)/Queueing/Clear",
+            url: "@(ViewBag.UrlRoot)/QueueingV2/Clear",
             data: {
                 qLocation: GetSelectedQLoc(),
                 qGroup: GetSelectedQGroup(),
@@ -618,7 +618,7 @@
                 }
             }],
             "ajax": {
-                "url": "@(ViewBag.UrlRoot)/Queueing/RunningTextGetData",
+                "url": "@(ViewBag.UrlRoot)/QueueingV2/RunningTextGetData",
                 "type": "POST",
                 "datatype": "json",
                 "data": function (d) {
@@ -679,7 +679,7 @@
     function RnTxEdit(RunningTextID) {
         //ShowInfo("Under Development");
         $("#divRnTxAddNew").hide();
-        CoreLoadContentToContainerDiv("@(ViewBag.UrlRoot)/Queueing/RunningTextEditor?RunningTextID=" + RunningTextID, "divRnTxEditor", "GET", function () {
+        CoreLoadContentToContainerDiv("@(ViewBag.UrlRoot)/QueueingV2/RunningTextEditor?RunningTextID=" + RunningTextID, "divRnTxEditor", "GET", function () {
             //console.log("ssss");
             $("#divRnTxEditor").fadeIn("slow");
         });
@@ -690,7 +690,7 @@
 
         $.ajax({
             type: 'POST',
-            url: "@(ViewBag.UrlRoot)/Queueing/RunningTextSave",
+            url: "@(ViewBag.UrlRoot)/QueueingV2/RunningTextSave",
             data: {
                 RunningTextID: $("#hdnRnTxID").val(),
                 ServiceUnitID: $("#cboRnTxServiceUnit").val(),
@@ -724,7 +724,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: "@(ViewBag.UrlRoot)/Queueing/RunningTextDelete",
+                url: "@(ViewBag.UrlRoot)/QueueingV2/RunningTextDelete",
                 data: {
                     RunningTextID: RunningTextID
                 },
