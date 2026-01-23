@@ -74,6 +74,10 @@ namespace Temiang.Avicenna.Module.RADT.Emr.AssessmentCtl
                     gcsCtl.Condition = igd.Condition;
                     gcsCtl.Gcs = igd.Consciousness;
 
+                    // ✅ POPULATE CASE TYPE
+                    if (!string.IsNullOrEmpty(igd.CaseType))
+                        rblCaseType.SelectedValue = igd.CaseType;
+
                     // Triage
                     var reg = new Registration();
                     if (reg.LoadByPrimaryKey(assessment.RegistrationNo))
@@ -106,6 +110,8 @@ namespace Temiang.Avicenna.Module.RADT.Emr.AssessmentCtl
             igd.Condition = gcsCtl.Condition;
             igd.Consciousness = gcsCtl.Gcs;
 
+            // ✅ TAMBAHAN CASE TYPE
+            igd.CaseType = rblCaseType.SelectedValue;
 
             assessment.PhysicalExam = JsonConvert.SerializeObject(igd);
 
