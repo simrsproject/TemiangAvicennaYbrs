@@ -26,6 +26,7 @@ namespace Temiang.Avicenna.Module.RADT.Emr.AssessmentCtl
             else
                 StandardReference.InitializeIncludeSpace(ddlTriage, triageStdRefId, true);
 
+            SetCaseTypeVisibility();
 
             // Seting ReviewSystem Control
             var igd = new Igd();
@@ -157,6 +158,23 @@ namespace Temiang.Avicenna.Module.RADT.Emr.AssessmentCtl
                 strBuilder.AppendLine(caption);
                 strBuilder.AppendLine(value);
             }
+        }
+
+        private void SetCaseTypeVisibility()
+        {
+            var healthCareId = AppSession.Parameter.HealthcareID;
+
+            bool isEnable = string.Equals(
+               healthCareId,
+               "RSI",
+               StringComparison.OrdinalIgnoreCase
+            );
+
+            trCaseType.Visible = isEnable;
+            rblCaseType.Enabled = isEnable;
+
+            if (!isEnable)
+                rblCaseType.ClearSelection();
         }
 
         #endregion

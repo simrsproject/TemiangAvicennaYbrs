@@ -13,7 +13,7 @@
             </td>
             <td></td>
         </tr>
-        <tr>
+        <tr id="trCaseType" runat="server">
             <td class="label">Case Type</td>
             <td colspan="3">
                 <asp:RadioButtonList 
