@@ -28,6 +28,10 @@ namespace Temiang.Avicenna.Module.RADT.Emr.AssessmentCtl
 
             SetCaseTypeVisibility();
 
+            // ✅ DEFAULT CASE TYPE
+            if (rblCaseType.Enabled && rblCaseType.SelectedIndex == -1)
+                rblCaseType.SelectedValue = "Non Bedah";
+
             // Seting ReviewSystem Control
             var igd = new Igd();
             questAbdomenPelvis.QuestionGroupID = igd.AbdomenPelvis.QuestionGroupID;
