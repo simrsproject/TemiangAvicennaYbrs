@@ -139,6 +139,7 @@ namespace Temiang.Avicenna.Module.RADT.Emr.AssessmentCtl
             strBuilder.AppendLine("PRIMARY SURVEY:");
             strBuilder.AppendFormat("Triase: {0}", ddlTriage.SelectedText);
             strBuilder.AppendLine(string.Empty);
+            SoapObjectiveAppend("Case Type:", pe.CaseType, strBuilder);
             SoapObjectiveAppend("Jalan Nafas:", pe.JalanNapas.Summary, strBuilder);
             SoapObjectiveAppend("Pernafasan:", pe.Pernapasan.Summary, strBuilder);
             SoapObjectiveAppend("Sirkulasi:", pe.Sirkulasi.Summary, strBuilder);
