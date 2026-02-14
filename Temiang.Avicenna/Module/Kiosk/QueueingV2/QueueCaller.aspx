@@ -16,7 +16,7 @@
         function LoadQueueingCaller() {
             $.ajax({
                 type: 'POST',
-                url: BaseURL + "/Queueing/HomePage",
+                url: BaseURL + "/QueueingV2/HomePage",
                 data: {},
                 success: function (data) {
                     $('#divMain').html(data);
