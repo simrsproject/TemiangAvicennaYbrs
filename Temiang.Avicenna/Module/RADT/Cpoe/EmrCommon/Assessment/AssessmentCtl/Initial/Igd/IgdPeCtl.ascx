@@ -20,9 +20,10 @@
                     ID="rblCaseType" 
                     runat="server" 
                     RepeatDirection="Horizontal">
-                    <asp:ListItem Text="Non Bedah" Value="Non Bedah"></asp:ListItem>
+                    <asp:ListItem Text="Non Bedah" Value="Non Bedah" Selected="True"></asp:ListItem>
                     <asp:ListItem Text="Bedah" Value="Bedah"></asp:ListItem>
                     <asp:ListItem Text="Ponek" Value="Ponek"></asp:ListItem>
+                    <asp:ListItem Text="KLL" Value="KLL"></asp:ListItem>
                 </asp:RadioButtonList>
             </td>
             <td></td>

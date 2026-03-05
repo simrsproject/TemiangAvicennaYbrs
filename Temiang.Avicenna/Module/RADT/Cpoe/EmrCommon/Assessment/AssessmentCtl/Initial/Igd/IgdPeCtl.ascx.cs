@@ -28,6 +28,10 @@ namespace Temiang.Avicenna.Module.RADT.Emr.AssessmentCtl
 
             SetCaseTypeVisibility();
 
+            // ✅ DEFAULT CASE TYPE
+            if (rblCaseType.Enabled && rblCaseType.SelectedIndex == -1)
+                rblCaseType.SelectedValue = "Non Bedah";
+
             // Seting ReviewSystem Control
             var igd = new Igd();
             questAbdomenPelvis.QuestionGroupID = igd.AbdomenPelvis.QuestionGroupID;
@@ -134,6 +138,8 @@ namespace Temiang.Avicenna.Module.RADT.Emr.AssessmentCtl
 
             strBuilder.AppendLine("PRIMARY SURVEY:");
             strBuilder.AppendFormat("Triase: {0}", ddlTriage.SelectedText);
+            strBuilder.AppendLine(string.Empty);
+            strBuilder.AppendFormat("Case Type: {0}", pe.CaseType);
             strBuilder.AppendLine(string.Empty);
             SoapObjectiveAppend("Jalan Nafas:", pe.JalanNapas.Summary, strBuilder);
             SoapObjectiveAppend("Pernafasan:", pe.Pernapasan.Summary, strBuilder);
